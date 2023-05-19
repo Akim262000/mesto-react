@@ -1,12 +1,12 @@
 import React from 'react';
-import './App.css';
+import logo from './images/logo.svg';
 
 function App() {
   return (
   <div>
       <div className="page">
     <header className="header">
-      <img className="header__logo" src="<%=require('./images/logo.svg')%>" alt="картинка Место"/>
+      <img className="header__logo" src={logo} alt="картинка Место"/>
     </header>
     <main>
       <section className="profile">
