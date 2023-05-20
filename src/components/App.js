@@ -21,6 +21,12 @@ const handleEditAvatarClick = () => {
   setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
 }
 
+const closeAllPopups = () => {
+  setIsEditProfilePopupOpen(false);
+  setIsAddPlacePopupOpen(false);
+  setIsEditAvatarPopupOpen(false);
+}
+
   return (
   <div>
       <div className="page">
@@ -32,7 +38,7 @@ const handleEditAvatarClick = () => {
         />
         <Footer />
 
-    <PopupWithForm name='avatar' title='Обновить аватар' isOpen={isEditAvatarPopupOpen}>
+    <PopupWithForm name='avatar' title='Обновить аватар' isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}>
         <form  className="popup__form" name="form" novalidate>
             <input className="popup__input popup__input_type_avatar" type="url" name="avatar" id="avatar" placeholder="Ссылка на картинку" required/>
             <span className="popup__input-error popup__input-error_type_avatar"></span>
@@ -40,7 +46,7 @@ const handleEditAvatarClick = () => {
         </form>
     </PopupWithForm>
 
-    <PopupWithForm name='edit' title='Редактировать профиль' isOpen={isEditProfilePopupOpen}>
+    <PopupWithForm name='edit' title='Редактировать профиль' isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
       <form className="popup__form" name="form" novalidate>
             <input className="popup__input popup__input_type_name" type="text" id="name" name="name" minlength="2" maxlength="40" placeholder="Имя" required/>
             <span className="popup__input-error popup__input-error_type_name"></span>
@@ -50,7 +56,7 @@ const handleEditAvatarClick = () => {
         </form>
     </PopupWithForm>
 
-    <PopupWithForm name='new-card' title='Новое место' isOpen={isAddPlacePopupOpen}>
+    <PopupWithForm name='new-card' title='Новое место' isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
     <form className="popup__form" name="form" novalidate>
             <input className="popup__input popup__input_type_title" type="text" id="title" name="title" minlength="2" maxlength="30" placeholder="Название" required/>
             <span className="popup__input-error popup__input-error_type_title"></span>
@@ -59,16 +65,6 @@ const handleEditAvatarClick = () => {
             <button type="submit" name="button" className="popup__submit-button">Создать</button>
         </form>
     </PopupWithForm>
-
-    {/* <div className="popup popup_type_image">
-      <div className="popup__image-container">
-        <button type="button" aria-label="Закрыть" className="popup__close"></button>
-        <figure className="popup__figure">
-          <img className="popup__image"/>
-          <figcaption className="popup__figcaption"></figcaption>
-        </figure>
-      </div>
-    </div> */}
 
     <div className="popup popup_type_delete">
       <div className="popup__container">
