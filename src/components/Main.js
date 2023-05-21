@@ -1,18 +1,36 @@
 import React from "react";
-import logoAvatar from '../images/image.jpg'
+import api from "../utils/Api";
 
 const Main = (props) => {
+
+    const [userName, setUserName] = React.useState('');
+    const [userDescription, setUserDescription] = React.useState('');
+    const [userAvatar, setUserAvatar] = React.useState('');
+
+    React.useEffect(() => {
+      api.getUserInfo()
+      .then((data) => {
+        setUserName(data.name);
+        setUserDescription(data.about);
+        setUserAvatar(data.avatar);
+      })
+      .catch((err) => {
+        console.log(`Ошибка ${err}`);
+      });
+    })
+
+  
   return (
   <>  
     <main>
       <section className="profile">
         <div className="profile__card">
-          <img className="profile__avatar" src={logoAvatar} alt="Картинка аватарка"/>
+          <img className="profile__avatar" src={userAvatar} alt="Картинка аватарка"/>
           <button className="profile__avatar-button" onClick={props.onEditAvatar}></button>
           <div className="profile__info">
-            <h1 className="profile__name"></h1>
+            <h1 className="profile__name">{userName}</h1>
             <button type="button" aria-label="Редактировать" className="profile__edit-button" onClick={props.onEditProfile}></button>
-            <p className="profile__description"></p>
+            <p className="profile__description">{userDescription}</p>
           </div>
         </div>
         <button type="button" aria-label="Добавить" className="profile__add-button" onClick={props.onAddPlace}></button>
@@ -36,6 +54,6 @@ const Main = (props) => {
     </main>
   </>
   )
-}
+  }
 
 export default Main;
