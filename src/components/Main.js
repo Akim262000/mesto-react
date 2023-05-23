@@ -1,11 +1,13 @@
 import React from "react";
 import api from "../utils/Api";
+import Card from "./Card";
 
 const Main = (props) => {
 
     const [userName, setUserName] = React.useState('');
     const [userDescription, setUserDescription] = React.useState('');
     const [userAvatar, setUserAvatar] = React.useState('');
+    const [cards, setCards] = React.useState([]);
 
     React.useEffect(() => {
       api.getUserInfo()
@@ -17,7 +19,17 @@ const Main = (props) => {
       .catch((err) => {
         console.log(`Ошибка ${err}`);
       });
-    })
+    });
+
+    React.useEffect(() => {
+      api.getInitialCards()
+      .then((data) => {
+        setCards(data);
+      })
+      .catch((err) => {
+        console.log(`Ошибка ${err}`);
+      });
+    });
 
   
   return (
@@ -37,23 +49,16 @@ const Main = (props) => {
       </section>
       
       <section className="elements">
-        <template className="element-template">
-          <div className="element">
-            <img className="element__image"/>
-            <button type="button" aria-label="Удаление" className="element__button-delete"></button>
-            <div className="element__info">
-              <h2 className="element__title"></h2>
-              <div className="element__like">
-                <button type="button" aria-label="Лайк" className="element__button-like"></button>
-                <span className="element__like-number"></span>
-              </div>
-            </div>
-          </div>
-        </template>
+        {cards.map((card) => {
+          return <Card
+            key={card.id}
+            card={card}
+          />
+        })}
       </section>
     </main>
   </>
-  )
-  }
+  );
+  };
 
 export default Main;
