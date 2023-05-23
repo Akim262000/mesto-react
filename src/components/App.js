@@ -3,11 +3,13 @@ import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
+import ImagePopup from './ImagePopup';
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState({});
 
 const handleEditProfileClick = () => {
   setIsEditProfilePopupOpen(!isEditProfilePopupOpen);
@@ -21,10 +23,15 @@ const handleEditAvatarClick = () => {
   setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
 }
 
+const handleCardClick = (card) => {
+  setSelectedCard(card);
+}
+
 const closeAllPopups = () => {
   setIsEditProfilePopupOpen(false);
   setIsAddPlacePopupOpen(false);
   setIsEditAvatarPopupOpen(false);
+  setSelectedCard({});
 }
 
   return (
@@ -35,6 +42,7 @@ const closeAllPopups = () => {
           onEditProfile = {handleEditProfileClick}
           onAddPlace = {handleAddPlaceClick}
           onEditAvatar = {handleEditAvatarClick}
+          onCardClick={handleCardClick}
         />
         <Footer />
 
@@ -65,6 +73,8 @@ const closeAllPopups = () => {
             <button type="submit" name="button" className="popup__submit-button">Создать</button>
         </form>
     </PopupWithForm>
+
+    <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
 
     <div className="popup popup_type_delete">
       <div className="popup__container">
