@@ -19,7 +19,7 @@ const Main = ({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) => {
       .catch((err) => {
         console.log(`Ошибка ${err}`);
       });
-  });
+  }, []);
 
   React.useEffect(() => {
     api
@@ -30,7 +30,7 @@ const Main = ({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) => {
       .catch((err) => {
         console.log(`Ошибка ${err}`);
       });
-  });
+  }, []);
 
   return (
     <>
