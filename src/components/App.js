@@ -4,12 +4,32 @@ import Main from "./Main";
 import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
+import api from "../utils/Api";
+import {CurrentUserContext} from "../contexts/CurrentUserContext";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({});
+  const [currentUser, setCurrentUser] = React.useState({
+    name: "",
+    about: "",
+    avatar: "",
+    _id: "",
+    cohort: "",
+  });
+
+  React.useEffect(() => {
+    api
+      .getUserInfo()
+      .then((data) => {
+        setCurrentUser(data);
+      })
+      .catch((err) => {
+        console.log(`Ошибка ${err}`);
+      });
+  }, []);
 
   const handleEditProfileClick = () => {
     setIsEditProfilePopupOpen(!isEditProfilePopupOpen);
@@ -35,7 +55,7 @@ function App() {
   };
 
   return (
-    <div>
+    <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <Header />
         <Main
@@ -135,7 +155,7 @@ function App() {
           </div>
         </div>
       </div>
-    </div>
+    </CurrentUserContext.Provider>
   );
 }
 
