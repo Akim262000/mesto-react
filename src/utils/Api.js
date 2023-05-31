@@ -70,20 +70,13 @@ class Api {
     }).then((res) => this._parseResponse(res));
   }
 
-  // Добавить лайк
-  setLike(cardId) {
+  // Добавить/удалить лайк
+  changeLikeCardStatus(cardId, isLiked) {
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
-      method: "PUT",
-      headers: this._headers,
-    }).then((res) => this._parseResponse(res));
-  }
-
-  // Удалить лайк
-  deleteLike(cardId) {
-    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
-      method: "DELETE",
-      headers: this._headers,
-    }).then((res) => this._parseResponse(res));
+      method: `${!isLiked ? 'DELETE' : 'PUT'}`,
+      headers: this._headers
+    })
+      .then(res => this._parseResponse(res));
   }
 }
 

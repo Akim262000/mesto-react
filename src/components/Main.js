@@ -4,7 +4,8 @@ import Card from "./Card";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 const Main = ({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) => {
-  const {name, description, avatar} = useContext(CurrentUserContext);
+  const currentUser = useContext(CurrentUserContext);
+  const {name, about, avatar} = currentUser;
   const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
@@ -18,6 +19,22 @@ const Main = ({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) => {
       });
   }, []);
 
+  function handleCardLike(card) {
+    // Снова проверяем, есть ли уже лайк на этой карточке
+    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    
+    // Отправляем запрос в API и получаем обновлённые данные карточки
+    api
+      .changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        setCards((state) => 
+          state.map((c) => c._id === card._id ? newCard : c));
+      })
+      .catch((err) => {
+        console.log(`Ошибка ${err}`);
+      });
+}
+
   return (
     <>
       <main>
@@ -28,7 +45,7 @@ const Main = ({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) => {
             <div className="profile__info">
               <h1 className="profile__name">{name}</h1>
               <button type="button" aria-label="Редактировать" className="profile__edit-button" onClick={onEditProfile}></button>
-              <p className="profile__description">{description}</p>
+              <p className="profile__description">{about}</p>
             </div>
           </div>
           <button type="button" aria-label="Добавить" className="profile__add-button" onClick={onAddPlace}></button>
@@ -36,7 +53,7 @@ const Main = ({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) => {
 
         <section className="elements">
           {cards.map((card) => {
-            return <Card key={card._id} card={card} onCardClick={onCardClick} />;
+            return <Card key={card._id} card={card} onCardClick={onCardClick} onCardLike={handleCardLike}/>;
           })}
         </section>
       </main>
