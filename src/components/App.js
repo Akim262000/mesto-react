@@ -6,6 +6,7 @@ import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import api from "../utils/Api";
 import {CurrentUserContext} from "../contexts/CurrentUserContext";
+import EditProfilePopup from "./EditProfilePopup";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
@@ -47,6 +48,18 @@ function App() {
     setSelectedCard(card);
   };
 
+  const handleUpdaterUser = (newUserInfo) => {
+    api
+      .setUserInfo(newUserInfo)
+      .then((data) => {
+        setCurrentUser(data)
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(`Ошибка ${err}`);
+      });    
+  };
+
   const closeAllPopups = () => {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
@@ -83,35 +96,7 @@ function App() {
           </form>
         </PopupWithForm>
 
-        <PopupWithForm name="edit" title="Редактировать профиль" isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
-          <form className="popup__form" name="form" novalidate>
-            <input
-              className="popup__input popup__input_type_name"
-              type="text"
-              id="name"
-              name="name"
-              minlength="2"
-              maxlength="40"
-              placeholder="Имя"
-              required
-            />
-            <span className="popup__input-error popup__input-error_type_name"></span>
-            <input
-              className="popup__input popup__input_type_description"
-              type="text"
-              id="description"
-              name="description"
-              minlength="2"
-              maxlength="200"
-              placeholder="Описание"
-              required
-            />
-            <span className="popup__input-error popup__input-error_type_description"></span>
-            <button type="submit" className="popup__submit-button">
-              Сохранить
-            </button>
-          </form>
-        </PopupWithForm>
+        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdaterUser} />
 
         <PopupWithForm name="new-card" title="Новое место" isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
           <form className="popup__form" name="form" novalidate>
