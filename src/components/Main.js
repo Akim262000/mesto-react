@@ -33,7 +33,18 @@ const Main = ({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) => {
       .catch((err) => {
         console.log(`Ошибка ${err}`);
       });
-}
+  }
+
+  function handleCardDelete(cardId){
+    api
+    .deleteCard(cardId)
+    .then(() => {
+      setCards((cards) => cards.filter(card => card._id !== cardId));
+    })
+    .catch((err) => {
+      console.log(`Ошибка ${err}`);
+    });
+  }
 
   return (
     <>
@@ -53,7 +64,7 @@ const Main = ({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) => {
 
         <section className="elements">
           {cards.map((card) => {
-            return <Card key={card._id} card={card} onCardClick={onCardClick} onCardLike={handleCardLike}/>;
+            return <Card key={card._id} card={card} onCardClick={onCardClick} onCardLike={handleCardLike} onCardDelete={handleCardDelete}/>;
           })}
         </section>
       </main>
