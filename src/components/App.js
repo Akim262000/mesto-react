@@ -7,6 +7,7 @@ import ImagePopup from "./ImagePopup";
 import api from "../utils/Api";
 import {CurrentUserContext} from "../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
+import EditAvatarPopup from "./EditAvatarPopup";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
@@ -48,9 +49,21 @@ function App() {
     setSelectedCard(card);
   };
 
-  const handleUpdaterUser = (newUserInfo) => {
+  const handleUpdateUser = (newUserInfo) => {
     api
       .setUserInfo(newUserInfo)
+      .then((data) => {
+        setCurrentUser(data)
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(`Ошибка ${err}`);
+      });    
+  };
+
+  const handleUpdateAvatar = (data) => {
+    api
+      .setUserAvatar(data)
       .then((data) => {
         setCurrentUser(data)
         closeAllPopups();
@@ -79,24 +92,9 @@ function App() {
         />
         <Footer />
 
-        <PopupWithForm name="avatar" title="Обновить аватар" isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}>
-          <form className="popup__form" name="form" novalidate>
-            <input
-              className="popup__input popup__input_type_avatar"
-              type="url"
-              name="avatar"
-              id="avatar"
-              placeholder="Ссылка на картинку"
-              required
-            />
-            <span className="popup__input-error popup__input-error_type_avatar"></span>
-            <button type="submit" className="popup__submit-button">
-              Сохранить
-            </button>
-          </form>
-        </PopupWithForm>
+        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
 
-        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdaterUser} />
+        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
 
         <PopupWithForm name="new-card" title="Новое место" isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
           <form className="popup__form" name="form" novalidate>
