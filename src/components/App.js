@@ -2,12 +2,12 @@ import React from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import api from "../utils/Api";
 import {CurrentUserContext} from "../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
+import AddPlacePopup from "./AddPlacePopup";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
@@ -21,6 +21,18 @@ function App() {
     _id: "",
     cohort: "",
   });
+  const [cards, setCards] = React.useState([]);
+
+  React.useEffect(() => {
+    api
+      .getInitialCards()
+      .then((data) => {
+        setCards(data);
+      })
+      .catch((err) => {
+        console.log(`Ошибка ${err}`);
+      });
+  }, []);
 
   React.useEffect(() => {
     api
@@ -49,11 +61,37 @@ function App() {
     setSelectedCard(card);
   };
 
+  function handleCardLike(card) {
+    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+
+    api
+      .changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        setCards((state) =>
+          state.map((c) => (c._id === card._id ? newCard : c))
+        );
+      })
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`);
+      });
+  }
+
+  function handleCardDelete(cardId) {
+    api
+      .deleteCard(cardId)
+      .then(() => {
+        setCards((cards) => cards.filter((card) => card._id !== cardId));
+      })
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`);
+      });
+  }
+
   const handleUpdateUser = (newUserInfo) => {
     api
       .setUserInfo(newUserInfo)
       .then((data) => {
-        setCurrentUser(data)
+        setCurrentUser(data);
         closeAllPopups();
       })
       .catch((err) => {
@@ -61,17 +99,29 @@ function App() {
       });    
   };
 
-  const handleUpdateAvatar = (data) => {
+  const handleUpdateAvatar = (newData) => {
     api
-      .setUserAvatar(data)
+      .setUserAvatar(newData)
       .then((data) => {
-        setCurrentUser(data)
+        setCurrentUser(data);
         closeAllPopups();
       })
       .catch((err) => {
         console.log(`Ошибка ${err}`);
       });    
   };
+
+  const handleAddPlaceSubmit = (newData) => {
+    api
+      .addCard(newData)
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(`Ошибка ${err}`);
+      });  
+  }
 
   const closeAllPopups = () => {
     setIsEditProfilePopupOpen(false);
@@ -89,6 +139,9 @@ function App() {
           onAddPlace={handleAddPlaceClick}
           onEditAvatar={handleEditAvatarClick}
           onCardClick={handleCardClick}
+          cards={cards}
+          onCardLike={handleCardLike}
+          onCardDelete={handleCardDelete}
         />
         <Footer />
 
@@ -96,33 +149,7 @@ function App() {
 
         <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
 
-        <PopupWithForm name="new-card" title="Новое место" isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
-          <form className="popup__form" name="form" novalidate>
-            <input
-              className="popup__input popup__input_type_title"
-              type="text"
-              id="title"
-              name="title"
-              minlength="2"
-              maxlength="30"
-              placeholder="Название"
-              required
-            />
-            <span className="popup__input-error popup__input-error_type_title"></span>
-            <input
-              className="popup__input popup__input_type_image"
-              type="url"
-              id="image"
-              name="image"
-              placeholder="Ссылка на картинку"
-              required
-            />
-            <span className="popup__input-error popup__input-error_type_image"></span>
-            <button type="submit" name="button" className="popup__submit-button">
-              Создать
-            </button>
-          </form>
-        </PopupWithForm>
+        <AddPlacePopup isOpen={isAddPlacePopupOpen} onclose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
 
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
 
@@ -130,7 +157,7 @@ function App() {
           <div className="popup__container">
             <button type="button" aria-label="Закрыть" className="popup__close"></button>
             <h3 className="popup__title">Вы уверены?</h3>
-            <form className="popup__form" action="#" name="form" novalidate>
+            <form className="popup__form" action="#" name="form" noValidate>
               <button type="submit" className="popup__submit-button">
                 Да
               </button>

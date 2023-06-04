@@ -32,14 +32,14 @@ const EditProfilePopup = ({isOpen, onClose, onUpdateUser }) => {
 
 return (
   <PopupWithForm name="edit" title="Редактировать профиль" isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit}>
-          <form className="popup__form" name="form" novalidate>
+          <fieldset className="popup__form" name="form" noValidate>
             <input
               className="popup__input popup__input_type_name"
               type="text"
               id="name"
               name="name"
-              minlength="2"
-              maxlength="40"
+              minLength="2"
+              maxLength="40"
               placeholder="Имя"
               required
               value={name}
@@ -51,8 +51,8 @@ return (
               type="text"
               id="description"
               name="description"
-              minlength="2"
-              maxlength="200"
+              minLength="2"
+              maxLength="200"
               placeholder="Описание"
               required
               value={description}
@@ -62,7 +62,7 @@ return (
             <button type="submit" className="popup__submit-button">
               Сохранить
             </button>
-          </form>
+          </fieldset>
         </PopupWithForm>
 );
 };
