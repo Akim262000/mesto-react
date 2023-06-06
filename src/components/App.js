@@ -4,7 +4,7 @@ import Main from "./Main";
 import Footer from "./Footer";
 import ImagePopup from "./ImagePopup";
 import api from "../utils/Api";
-import {CurrentUserContext} from "../contexts/CurrentUserContext";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
@@ -67,9 +67,7 @@ function App() {
     api
       .changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
-        setCards((state) =>
-          state.map((c) => (c._id === card._id ? newCard : c))
-        );
+        setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
       })
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
@@ -96,7 +94,7 @@ function App() {
       })
       .catch((err) => {
         console.log(`Ошибка ${err}`);
-      });    
+      });
   };
 
   const handleUpdateAvatar = (newData) => {
@@ -108,7 +106,7 @@ function App() {
       })
       .catch((err) => {
         console.log(`Ошибка ${err}`);
-      });    
+      });
   };
 
   const handleAddPlaceSubmit = (newData) => {
@@ -120,8 +118,8 @@ function App() {
       })
       .catch((err) => {
         console.log(`Ошибка ${err}`);
-      });  
-  }
+      });
+  };
 
   const closeAllPopups = () => {
     setIsEditProfilePopupOpen(false);
