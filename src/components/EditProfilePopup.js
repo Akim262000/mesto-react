@@ -18,7 +18,7 @@ const EditProfilePopup = ({ isOpen, onClose, onUpdateUser }) => {
   useEffect(() => {
     setName(currentUser.name);
     setDescription(currentUser.about);
-  }, [currentUser]);
+  }, [currentUser, isOpen]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -30,7 +30,7 @@ const EditProfilePopup = ({ isOpen, onClose, onUpdateUser }) => {
   };
 
   return (
-    <PopupWithForm name="edit" title="Редактировать профиль" isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit}>
+    <PopupWithForm name="edit" title="Редактировать профиль" isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit} buttonText={"Сохранить"}>
       <fieldset className="popup__form" name="form" noValidate>
         <input
           className="popup__input popup__input_type_name"
@@ -58,9 +58,6 @@ const EditProfilePopup = ({ isOpen, onClose, onUpdateUser }) => {
           onChange={handleDescriptionChange}
         />
         <span className="popup__input-error popup__input-error_type_description"></span>
-        <button type="submit" className="popup__submit-button">
-          Сохранить
-        </button>
       </fieldset>
     </PopupWithForm>
   );

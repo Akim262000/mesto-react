@@ -23,7 +23,7 @@ const AddPlacePopup = ({ isOpen, onclose, onAddPlace }) => {
   };
 
   return (
-    <PopupWithForm name="new-card" title="Новое место" isOpen={isOpen} onClose={onclose} onSubmit={handleSubmit}>
+    <PopupWithForm name="new-card" title="Новое место" isOpen={isOpen} onClose={onclose} onSubmit={handleSubmit} buttonText={"Создать"}>
       <fieldset className="popup__form" name="form" noValidate>
         <input
           className="popup__input popup__input_type_title"
@@ -47,9 +47,6 @@ const AddPlacePopup = ({ isOpen, onclose, onAddPlace }) => {
           onChange={handleImageChange}
         />
         <span className="popup__input-error popup__input-error_type_image"></span>
-        <button type="submit" name="button" className="popup__submit-button">
-          Создать
-        </button>
       </fieldset>
     </PopupWithForm>
   );

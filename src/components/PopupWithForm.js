@@ -8,6 +8,9 @@ const PopupWithForm = (props) => {
         <h3 className="popup__title">{props.title}</h3>
         <form className="popup__form" name={`${props.name}`} onSubmit={props.onSubmit} noValidate>
           {props.children}
+          <button type="submit" className="popup__submit-button">
+            {props.buttonText}
+          </button>
         </form>
       </div>
     </div>
