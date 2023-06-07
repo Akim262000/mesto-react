@@ -14,7 +14,7 @@ const EditAvatarPopup = ({ isOpen, onClose, onUpdateAvatar }) => {
 
   return (
     <PopupWithForm name="avatar" title="Обновить аватар" isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit} buttonText={"Сохранить"}>
-      <fieldset className="popup__form" name="form" noValidate>
+      <fieldset className="popup__form" name="form">
         <input
           className="popup__input popup__input_type_avatar"
           type="url"

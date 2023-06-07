@@ -31,7 +31,7 @@ const EditProfilePopup = ({ isOpen, onClose, onUpdateUser }) => {
 
   return (
     <PopupWithForm name="edit" title="Редактировать профиль" isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit} buttonText={"Сохранить"}>
-      <fieldset className="popup__form" name="form" noValidate>
+      <fieldset className="popup__form" name="form">
         <input
           className="popup__input popup__input_type_name"
           type="text"
