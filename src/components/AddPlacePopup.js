@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PopupWithForm from "./PopupWithForm";
 
 const AddPlacePopup = ({ isOpen, onclose, onAddPlace }) => {
@@ -20,9 +20,12 @@ const AddPlacePopup = ({ isOpen, onclose, onAddPlace }) => {
       name: description,
       link: image,
     });
+  };
+
+  useEffect(() => {
     setImage("");
     setDescription("");
-  };
+  }, [isOpen]);
 
   return (
     <PopupWithForm name="new-card" title="Новое место" isOpen={isOpen} onClose={onclose} onSubmit={handleSubmit} buttonText={"Создать"}>
